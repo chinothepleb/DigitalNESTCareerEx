@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class DM_ContentTypeUI : MonoBehaviour
 {
-    public enum State
+    private enum State
     {
         Default,
         Email,
@@ -28,15 +28,18 @@ public class DM_ContentTypeUI : MonoBehaviour
     [SerializeField] private Button influencerOutreachButton;
     [SerializeField] private Button seoButton;
     [SerializeField] private Button videoAdButton;
+    [SerializeField] private Button confirmButton;
     [SerializeField] private GameObject infoPopUp;
     [SerializeField] private TextMeshProUGUI infoPopUpText;
 
     private State state;
+    private string chosenContent = null;
 
 
 
     private void Awake()
     {
+        ShowCanvas();
         HideOrganicOptions();
         HidePaidOptions();
         HideInfoPopUp();
@@ -62,6 +65,8 @@ public class DM_ContentTypeUI : MonoBehaviour
         seoButton.onClick.AddListener(() => { state = State.SEOButton; ShowInfoPopUp();});
         videoAdButton.onClick.AddListener(() => { state = State.VideoAd; ShowInfoPopUp();});
 
+        confirmButton.onClick.AddListener(() => { state = State.Default; ConfirmButtonChoice();});
+
         state = State.Default;
 
     }
@@ -79,27 +84,35 @@ public class DM_ContentTypeUI : MonoBehaviour
             {
                 case State.Email:
                     infoPopUpText.text = "This is an email";
+                    chosenContent = "Email";
                     break;
                 case State.Graphic:
                     infoPopUpText.text = "This is an graphic";
+                    chosenContent = "Graphic";
                     break;
                 case State.Video:
                     infoPopUpText.text = "This is a video";
+                    chosenContent = "Video";
                     break;
                 case State.Text:
                     infoPopUpText.text = "This is a text";
+                    chosenContent = "Text";
                     break;
                 case State.ClickableAd:
                     infoPopUpText.text = "This is a clickable ad";
+                    chosenContent = "ClickableAd";
                     break;
                 case State.InfluencerOutreach:
                     infoPopUpText.text = "This is influencer outreach";
+                    chosenContent = "InfluencerOutreach";
                     break;
                 case State.SEOButton:
                     infoPopUpText.text = "This is SEO";
+                    chosenContent = "SEO";
                     break;
                 case State.VideoAd:
                     infoPopUpText.text = "This is a video ad";
+                    chosenContent = "VideoAd";
                     break;
             }
     }
@@ -156,11 +169,37 @@ public class DM_ContentTypeUI : MonoBehaviour
     private void ShowInfoPopUp()
     {
         infoPopUp.gameObject.SetActive(true);
+        confirmButton.gameObject.SetActive(true);
     }
 
     private void HideInfoPopUp()
     {
         infoPopUp.gameObject.SetActive(false);
+        confirmButton.gameObject.SetActive(false);
+    }
+
+
+    private void ConfirmButtonChoice()
+    {
+        // HideOrganicPaidButtons();
+        // HideOrganicOptions();
+        // HidePaidOptions();
+        // HideInfoPopUp();
+
+        HideCanvas();
+
+        state = State.Default;
+        Debug.Log(chosenContent);
+    }
+
+    private void ShowCanvas()
+    {
+        gameObject.SetActive(true);
+    }
+    
+    private void HideCanvas()
+    {
+        gameObject.SetActive(false);
     }
 
 }
